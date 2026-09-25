@@ -8,6 +8,24 @@
   --color-accent: #ef4b2c;
   --color-accent-dim: #f6a892;
   --color-line: #d9d4c4;
+  color-scheme: light;
+}
+
+/*
+ * Every section on the site is built from `paper`/`ink` pairs — some use
+ * paper-as-background (Hero, Projects), others deliberately use ink-as-
+ * background for accent sections (Skills, Contact). Dark mode is defined as
+ * a straight swap of those two roles: bg-ink and bg-paper flip which one is
+ * dark, so every section's own contrast is preserved and the site's
+ * light/dark rhythm inverts consistently instead of collapsing to grey.
+ */
+:root[data-theme="dark"] {
+  --color-paper: #121212;
+  --color-paper-2: #1c1c1c;
+  --color-ink: #f3f1ea;
+  --color-ink-2: #e9e5d8;
+  --color-line: #2a2a2a;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -31,6 +49,15 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Smooth cross-fade when the theme toggles — most elements just pick up
+   background/border/text color from the swapped variables above. */
+body,
+body * {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 }
 
 ::selection {

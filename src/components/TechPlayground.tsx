@@ -28,16 +28,26 @@ import {
   SiPostman,
 } from "react-icons/si";
 
-type Tech = { name: string; Icon: IconType; color: string };
+type Tech = { name: string; Icon: IconType; color?: string };
+
+// Brand marks that are themselves black (or near enough) get no fixed hex —
+// leaving color undefined means react-icons sets no inline style, so these
+// fall through to the text-ink class instead and stay visible against the
+// chip's swapped background whether the chip itself renders light or dark.
+// (Passing the literal string "currentColor" here instead would make
+// react-icons set an inline style="color:currentColor", which — being
+// inline — outranks the text-ink class and just re-inherits the ambient
+// section color instead of picking up ink.)
+const MONO = undefined;
 
 const STACK: Tech[] = [
   { name: "React", Icon: SiReact, color: "#61DAFB" },
-  { name: "Next.js", Icon: SiNextdotjs, color: "#131118" },
+  { name: "Next.js", Icon: SiNextdotjs, color: MONO },
   { name: "TypeScript", Icon: SiTypescript, color: "#3178C6" },
   { name: "JavaScript", Icon: SiJavascript, color: "#F0DB4F" },
   { name: "Tailwind CSS", Icon: SiTailwindcss, color: "#06B6D4" },
   { name: "Node.js", Icon: SiNodedotjs, color: "#339933" },
-  { name: "Express", Icon: SiExpress, color: "#131118" },
+  { name: "Express", Icon: SiExpress, color: MONO },
   { name: "FastAPI", Icon: SiFastapi, color: "#009688" },
   { name: "Firebase", Icon: SiFirebase, color: "#FFCA28" },
   { name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
@@ -45,12 +55,12 @@ const STACK: Tech[] = [
   { name: "PostgreSQL", Icon: SiPostgresql, color: "#4169E1" },
   { name: "Supabase", Icon: SiSupabase, color: "#3ECF8E" },
   { name: "Python", Icon: SiPython, color: "#3776AB" },
-  { name: "Pandas", Icon: SiPandas, color: "#150458" },
+  { name: "Pandas", Icon: SiPandas, color: MONO },
   { name: "PyTorch", Icon: SiPytorch, color: "#EE4C2C" },
   { name: "Hugging Face", Icon: SiHuggingface, color: "#FF9D0B" },
   { name: "Figma", Icon: SiFigma, color: "#F24E1E" },
   { name: "Git", Icon: SiGit, color: "#F05032" },
-  { name: "GitHub", Icon: SiGithub, color: "#131118" },
+  { name: "GitHub", Icon: SiGithub, color: MONO },
   { name: "Postman", Icon: SiPostman, color: "#FF6C37" },
 ];
 
@@ -311,7 +321,7 @@ export function TechPlayground() {
         className="relative mt-5 h-[300px] touch-none overflow-hidden border-b-2 border-paper/15"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(243,241,234,0.09) 1.4px, transparent 1.4px)",
+            "radial-gradient(color-mix(in srgb, var(--color-paper) 9%, transparent) 1.4px, transparent 1.4px)",
           backgroundSize: "24px 24px",
           backgroundPosition: "10px 10px",
         }}
@@ -320,7 +330,7 @@ export function TechPlayground() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(55% 60% at 50% 100%, rgba(239,75,44,0.10), transparent 70%)",
+              "radial-gradient(55% 60% at 50% 100%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 70%)",
           }}
         />
 
@@ -333,11 +343,21 @@ export function TechPlayground() {
             onPointerDown={handlePointerDown(i)}
             onPointerEnter={handleHoverStart(i, tech.name)}
             onPointerLeave={handleHoverEnd(i)}
-            className="absolute top-0 left-0 flex cursor-grab items-center justify-center rounded-[28%] bg-paper shadow-lg shadow-black/40 ring-1 ring-black/5 select-none active:cursor-grabbing"
-            style={{ width: BLOCK, height: BLOCK, willChange: "transform", touchAction: "none" }}
+            className="absolute top-0 left-0 flex cursor-grab items-center justify-center rounded-[28%] bg-gradient-to-b from-paper to-paper-2 ring-1 ring-ink/10 select-none active:cursor-grabbing"
+            style={{
+              width: BLOCK,
+              height: BLOCK,
+              willChange: "transform",
+              touchAction: "none",
+              boxShadow: "0 10px 20px -8px rgba(0,0,0,0.45), inset 0 1px 0 0 rgba(255,255,255,0.08)",
+            }}
             aria-hidden
           >
-            <tech.Icon size={BLOCK * 0.48} color={tech.color} />
+            <tech.Icon
+              size={BLOCK * 0.48}
+              className="text-ink"
+              {...(tech.color ? { color: tech.color } : {})}
+            />
           </div>
         ))}
 

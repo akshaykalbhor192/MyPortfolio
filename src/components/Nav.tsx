@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Asterisk } from "./icons";
+import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS = [
   { href: "#about", label: "About" },
@@ -48,12 +49,15 @@ export function Nav() {
           ))}
         </nav>
 
-        <a
-          href="#contact"
-          className="rounded-md border border-ink px-5 py-2 font-body text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
-        >
-          Let&apos;s talk
-        </a>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <a
+            href="#contact"
+            className="rounded-md border border-ink px-5 py-2 font-body text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            Let&apos;s talk
+          </a>
+        </div>
       </div>
     </header>
   );
