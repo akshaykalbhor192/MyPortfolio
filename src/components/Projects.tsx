@@ -8,6 +8,12 @@ import { GithubIcon } from "./icons";
 
 const THUMB_TONE = ["bg-ink", "bg-accent", "bg-ink-2"];
 
+// "#" is the placeholder used in content.ts for a link that isn't ready yet —
+// treat it (and anything empty) as "no link" so the button doesn't render.
+function hasLink(url: string | null | undefined) {
+  return Boolean(url && url !== "#");
+}
+
 export function Projects() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -141,20 +147,30 @@ export function Projects() {
                       </span>
                     ))}
                   </div>
-                  <div className="mt-6 flex gap-3 border-t border-line pt-4">
-                    <a
-                      href={project.github}
-                      className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-ink/70 transition-colors hover:text-ink"
-                    >
-                      <GithubIcon size={15} /> Code
-                    </a>
-                    <a
-                      href={project.live}
-                      className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-ink/70 transition-colors hover:text-ink"
-                    >
-                      <SquareArrowOutUpRight size={15} /> Live
-                    </a>
-                  </div>
+                  {(hasLink(project.github) || hasLink(project.live)) && (
+                    <div className="mt-6 flex gap-3 border-t border-line pt-4">
+                      {hasLink(project.github) && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-ink/70 transition-colors hover:text-ink"
+                        >
+                          <GithubIcon size={15} /> Code
+                        </a>
+                      )}
+                      {hasLink(project.live) && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-ink/70 transition-colors hover:text-ink"
+                        >
+                          <SquareArrowOutUpRight size={15} /> Live
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </motion.article>
             ))}
