@@ -133,7 +133,7 @@ export const projects = [
     stack: ["Python", "FastAPI", "Dialogflow", "Firebase"],
     description:
       "A FastAPI backend with Dialogflow integration for conversational ordering, RESTful APIs between frontend and backend, and Firebase-based real-time response handling.",
-    github: "#",
+    github: "https://github.com/itsakshaykalbhor/FoodApp_ChatBot.git",
     live: "#",
   },
   {
@@ -142,7 +142,7 @@ export const projects = [
     stack: ["React.js", "Firebase"],
     description:
       "A React app for exploring space-related media, with a fully responsive UI and optimized media loading and retrieval across devices.",
-    github: "#",
+    github: "https://github.com/akshaykalbhor192/Galaxy_Guardian.git",
     live: "#",
   },
 
